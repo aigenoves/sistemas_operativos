@@ -35,3 +35,16 @@ Repositorio para la cursada de la materia Sistemas Operativos de la UNLP
 [Expliación Práctica 5 - Seguridad - Parte 1](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep5_seguridad.pdf)  
 [Expliación Práctica 5 - Seguridad - Parte 2](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep5_seguridad_apparmor.pdf)  
 [Expliación Práctica 6 - Multiprocesadores](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep6_multiprocesadores.pdf)  
+
+## Resumenes de los temas
+
+[Resumen Tema 1 - Kernel](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_1)  
+[Resumen Tema 2 - System Calls](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_2)  
+[Resumen Tema 3 - Hilos](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_3)  
+[Resumen Tema 4 - Kernel](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_4)  
+[Resumen Tema 5 - cgroups, namespaces y contenedores](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_5)  
+[Resumen Tema 6 - Contenedores Docker](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_6)  
+[Resumen Tema 7 - Docker Compose, Podman](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_7)  
+[Resumen Tema 8 - Seguridad](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_8)  
+[Resumen Tema 9 - Multiprocesadores](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_9)  
+[Resumen Tema 10 - Deadlocks](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_10)  
