@@ -24,3 +24,14 @@ Repositorio para la cursada de la materia Sistemas Operativos de la UNLP
 [Práctica 4 - cgroups, ns, docker y docker compose](https://github.com/aigenoves/sistemas_operativos/tree/main/practicas/practica_4)  
 [Práctica 5 - Seguridad (partes 1 y 2)](https://github.com/aigenoves/sistemas_operativos/tree/main/practicas/practica_5)  
 [Práctica 6 - Multiprocesadores](https://github.com/aigenoves/sistemas_operativos/tree/main/practicas/practica_6)
+
+## Expliaciones de práctica
+[Expliación Práctica 1 - Kernel](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep1_kernel.pdf)  
+[Expliación Práctica 2 - Kernel II - Módulos y Drivers](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_modulos_y_drivers.pdf)  
+[Expliación Práctica 2 - Kernel II - System Calls y Módulos](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_system_calls.pdf)  
+[Expliación Práctica 3 - Threading](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_system_calls.pdf)  
+[Expliación Práctica 4 - Virtualización, emulación, CGroups y Namespaces](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_system_calls.pdf)  
+[Expliación Práctica 4 - Docker y docker compose](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep4b_virtualizacion_docker_compose.pdf)  
+[Expliación Práctica 5 - Seguridad - Parte 1](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep5_seguridad.pdf)  
+[Expliación Práctica 5 - Seguridad - Parte 2](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep5_seguridad_apparmor.pdf)  
+[Expliación Práctica 6 - Multiprocesadores](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep6_multiprocesadores.pdf)  
