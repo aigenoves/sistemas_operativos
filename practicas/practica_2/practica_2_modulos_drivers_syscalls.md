@@ -60,7 +60,7 @@
 
     - Un ejemplo de uso básico es: `strace -o pwd.out pwd > /dev/null`. Este comando ejecutaría el programa `pwd` y enviaría la salida de `strace` (el reporte de syscalls) al archivo `pwd.out`.
 
-    Al usar `strace`, se puede observar la secuencia de llamadas al sistema que el programa realiza, lo cual es útil para depurar, entender el comportamiento del programa o analizar problemas relacionados con interacciones con el kernel. La salida de `strace` muestra detalles como el nombre de la syscall, sus argumentos y el valor de retorno, como en el ejemplo ![salida del comando strace](pwd.jpg)
+    Al usar `strace`, se puede observar la secuencia de llamadas al sistema que el programa realiza, lo cual es útil para depurar, entender el comportamiento del programa o analizar problemas relacionados con interacciones con el kernel. La salida de `strace` muestra detalles como el nombre de la syscall, sus argumentos y el valor de retorno, como en el ejemplo ![salida del comando strace](pwd.png)
 
 7. ¿Para qué sirve la herramienta ausyscall? ¿Cómo se usa?
 
