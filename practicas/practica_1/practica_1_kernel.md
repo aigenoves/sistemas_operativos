@@ -81,7 +81,7 @@ Es una herramienta de construcción automática utilizada para compilar y enlaza
        Durante el ciclo de desarrollo de 9 o 10 semanas, Linus Torvalds publica versiones candidatas o **"release candidates"** (por ejemplo, 6.10-rc1, 6.10-rc2, etc.). Estas versiones no se consideran estables y están destinadas a que la comunidad las pruebe masivamente para encontrar y corregir errores antes de lanzar la versión final.
    2. **Stable (estable):**  
    Una vez que s epublica una versión `mainline` (por ejemplo la 6.9), esta se considera "estable". A partir de ese momento, solo recibirá correcciones de errores (incrementando el número `C`). Estas actualizaciones se publican según sea necesario, generalmente una vez por semana. La mayoría de las versiones estables solo se mantienen hasta que se publica la siguiente versión `mainline`.
-   3. **Longterm Support (LTS) o soporte a largo plazo:  
+   3. **Longterm Support (LTS) o soporte a largo plazo:**  
    Algunas versiones estables son designadas como LTS. Estas versiones reciben manteniendo durante un período mucho más largo, típicamente de 2 a 6 años o incluso más. Son ideales para sistemas en producción y para distribuciones de Linux que necesitan una base sólida del kernel (como Debian, Ubuntu LTS, etc.). La elección de qué kernel se convierte en LTS depende de varios factores, incluyendo la decisión de los mantenedores y las necesidades de la industria.  
 
     **Kernels de distribución**  
@@ -168,7 +168,7 @@ Es una herramienta de construcción automática utilizada para compilar y enlaza
         - El comando `make` busca el archivo `Makefile` (dentro del directorio del código fuente del kernel), interpreta sus directivas y **compila el kernel**.
         - Este proceso puede durar mucho tiempo dependiendo del procesador del sistema.
         - **Parámetro `-j`:** Permite ejecutar la compilación con **múltiples *jobs* (tareas) concurrentes**. Por ejemplo, `make -j 8` ejecutará 8 trabajos simultáneamente. Esto puede acelerar significativamente el tiempo de compilación al aprovechar los múltiples núcleos del procesador.
-    - **make modules**: 
+    - **make modules**:
         - utilizado en antiguos kernels, actualmente no es necesario.
         - **Compila todos los módulos necesarios** para satisfacer las opciones que fueron seleccionadas como módulo durante la configuración.
         - Actualmente, la tarea de `make modules` suele estar **incluida en la compilación del kernel con el comando `make`**.
@@ -192,3 +192,91 @@ Es una herramienta de construcción automática utilizada para compilar y enlaza
     El archivo initramfs (initial RAM filesystem) hace referencia a un **sistema de archivos temporal que se monta durante el arranque del sistema**.
 
     Su funcionalidad principal es **contener los ejecutables, *drivers* y módulos necesarios para lograr iniciar el sistema**. Una vez que el sistema ha arrancado completamente, este disco temporal se desmonta.
+
+    El uso de initramfs puede evitarse si:
+    - El **kernel tiene integrados directamente todos los drivers** necesarios para montar el sistema de archivos raíz.
+
+    - El sistema de archivos raíz **no depende de configuraciones especiales**, como:
+      - No se usa LVM, RAID ni cifrado.
+      - El disco raíz está directamente accesible (por ejemplo, un disco SATA sin módulos especiales).
+
+    - El gestor de arranque puede pasar el control directamente al kernel con la ubicación del sistema de archivos raíz ya montable.
+
+    Esto se da principalmente en sistemas embebidos o configuraciones muy simples y controladas.
+
+12. ¿Cuál es la razón por la que una vez compilado el nuevo kernel, es necesario reconfigurar el gestor de arranque que tengamos instalado?
+
+    La razón fundamental es que el gestor de arranque (comúnmente GRUB) mantiene una lista de los kernels disponibles para iniciar el sistema. Si se compila e instala un nuevo kernel, esta nueva imagen no será automáticamente reconocida por el gestor de arranque. La reconfiguración le permite al gestor de arranque **actualizar su base de datos o archivo de configuración** para incluir el nuevo kernel como una opción de arranque.
+
+    Por ejemplo, después de instalar el kernel con `make install` (que copia la imagen del kernel y otros archivos al directorio `/boot`) y los módulos con `make modules_install` (que los ubica en `/lib/modules/version_del_kernel`), para que el gestor de arranque GRUB 2 reconozca el nuevo kernel, se debe ejecutar el comando `sudo update-grub2`. Este comando actualiza la configuración de GRUB para que el nuevo kernel aparezca como una opción al iniciar el sistema, lo que permite al usuario seleccionarlo y probarlo.
+
+13. ¿Qué es un módulo del kernel? ¿Cuáles son los comandos principales para el manejo de módulos del kernel?
+
+    Un **módulo del kernel** es un **fragmento de código que puede cargarse y descargarse en el mapa de memoria del sistema operativo (Kernel) bajo demanda**. Estos módulos permiten **extender la funcionalidad del Kernel en "caliente", es decir, sin la necesidad de reiniciar el sistema**. Todo su código se ejecuta en modo Kernel (privilegiado).
+
+    La existencia de módulos permite que el kernel se desarrolle bajo un **diseño más modular**. Si, por ejemplo, hay una modificación en un driver, solo se necesita modificar el módulo y no todo el código del kernel. Además, los módulos se cargan bajo demanda, lo que resulta en una **menor utilización de memoria**. Sin embargo, es importante tener en cuenta que **cualquier error en un módulo puede colgar el sistema operativo**.
+    Los módulos disponibles se ubican convencionalmente en el directorio `/lib/modules/version_del_kernel`.
+
+    Los **comandos principales para el manejo de módulos del kernel** son:
+
+    - **`lsmod`:** Este comando lista los módulos cargados. Es equivalente a cat /proc/modules.
+    - **`rmmod [módulos]`:** Se utiliza para descargar uno o más módulos.
+    - **`modinfo [módulo]`:** Este comando muestra información sobre el módulo especificado.
+    - **`insmod [módulo] [opciones]`:** Intenta cargar el módulo especificado.
+    - **`depmod`**: Permite calcular las dependencias que deben respetarse al cargar y descargar módulos. Por defecto, depmod -a escribe las dependencias en el archivo /lib/modules/version/modules.emp.
+    - **`modprobe [módulo] [opciones]`:** Emplea la información de dependencias generada por depmod y la información de /etc/modules.conf para cargar el módulo especificado.
+
+14. ¿Qué es un parche del kernel? ¿Cuáles son las razones principales por las cuáles se deberían aplicar parches en el kernel? ¿A través de qué comando se realiza la aplicación de parches en el kernel?
+
+    Un **parche del kernel** es un **mecanismo que permite aplicar actualizaciones sobre una versión base** del código fuente del kernel. Estos parches se basan en **archivos `diff` (archivos de diferencia)**, los cuales indican qué contenido debe agregarse y qué debe quitarse del código.
+
+    Las razones principales por las cuales se deberían aplicar parches en el kernel son:
+
+    - **Agregar funcionalidad**, como nuevos drivers.
+    - **Realizar correcciones menores** al código.
+    - En ocasiones, puede resultar **más sencillo descargar un archivo de diferencia y aplicarlo en lugar de descargar todo el código** de una nueva versión del kernel. Esto sugiere una ventaja en términos de eficiencia para mantener el kernel actualizado.
+
+    La aplicación de parches en el kernel se realiza a través del comando `patch`. Un ejemplo del comando para aplicar un parche es el siguiente: `$ cd linux; xzcat ../patch-6.13.7.xz | patch -p1`.
+
+    El parámetro `--dry-run` es útil para probar la aplicación del parche sin realizar cambios reales en el código.
+
+15. Investigue la característica Energy-aware Scheduling incorporada en el kernel 5.0 y explique brevemente con sus palabras.
+    1. ¿Qué característica principal tiene un procesador ARM big.LITTLE?
+        La característica principal de un procesador ARM big.LITTLE es que está compuesto por **CPUs con diferentes microarquitecturas y capacidades de rendimiento**. Específicamente, incluyen:
+
+        - **CPUs "big":** que están más orientadas al rendimiento, con más etapas de pipeline, cachés más grandes y predictores más inteligentes. Generalmente, pueden alcanzar OPPs (puntos de rendimiento operativo) más altos.
+        - **CPUs "LITTLE":** que son de menor rendimiento y suelen ser más eficientes energéticamente en comparación con las "big" CPUs. Esta combinación permite al sistema equilibrar el rendimiento y la eficiencia energética, utilizando las CPUs "big" para cargas de trabajo exigentes y las "LITTLE" para tareas menos intensivas.
+
+    2. En un procesador ARM big.LITTLE y con esta característica habilitada. Cuando se despierta un proceso ¿a qué procesador lo asigna el scheduler?
+
+        En un sistema con procesadores ARM big.LITTLE y con la programación consciente de la capacidad habilitada (que sirve de base para EAS), el scheduler CFS utiliza un **criterio de "idoneidad de capacidad" (capacity fitness criterion)**. Este criterio busca una CPU donde la utilización de la tarea (p) sea menor que la capacidad de la CPU. Además, se considera el valor "clamp" de la tarea, que permite a los usuarios (a través de `uclamp`) especificar un rango de utilización mínimo y máximo para una tarea, influyendo así en la selección de la CPU. La fórmula que busca satisfacer el scheduler para la selección de CPU es `clamp(task_util(p), task_uclamp_min(p), task_uclamp_max(p)) < capacity(cpu)`.
+
+    3. ¿A qué tipo de dispositivos opinás que beneficia más esta característica?
+
+        En mi opinión, esta característica beneficia principalmente a dispositivos donde la gestión de energía es crítica y las cargas de trabajo son variables, desde muy ligeras hasta muy intensivas. Esto incluye:
+
+        - Dispositivos móviles (smartphones, tablets, wearables)
+        - Laptops y ultrabooks con arquitecturas híbridas
+        - Dispositivos de borde (Edge Computing)
+
+    Ver <https://docs.kernel.org/scheduler/sched-energy.html>
+
+16. Investigue la system call memfd_secret() incorporada en el kernel 5.14 y explique brevemente con sus palabras
+
+    1. ¿Cuál es su propósito?
+
+        El propósito principal de `memfd_secret()` es **permitir que un proceso en el espacio de usuario (user-space) cree una región de memoria que sea inaccesible para cualquier otra entidad, incluyendo el propio kernel**. La funcionalidad de esta llamada al sistema es la de asegurar un área de memoria "secreta" que protege los datos sensibles de accesos no autorizados.
+    2. ¿Para qué puede ser utilizada?
+        Esta `system call` puede ser utilizada para almacenar cualquier tipo de datos que requieran una alta confidencialidad y que no deban ser expuestos a otras partes del sistema, ni siquiera al kernel. Algunos de los usos mencionados en las fuentes incluyen:
+
+        - **Almacenamiento de claves criptográficas**.
+        - **Otros datos sensibles** que deban permanecer ocultos.
+        - **Claves de sesión de VPN**, tokens de acceso para TPMs (Trusted Platform Modules) de hardware, cookies de sesión para sudo y otras credenciales efímeras pero importantes.
+        - Para propósitos de **DRM (Digital Rights Management)**, como las claves de descifrado de Netflix o módulos como Widevine, buscando impedir que el usuario inspeccione el código que se ejecuta en su máquina. Esto es particularmente relevante en Android y ChromeOS, donde los proveedores de dispositivos podrían requerir esta funcionalidad.
+        - Como una **capa de "defensa en profundidad" (defense in depth)** contra ataques de "buffer overread" simples o fugas de información del kernel que no implican una ejecución arbitraria de código privilegiado. Busca hacer más difícil la construcción de ciertos ataques, aunque no proporciona garantías absolutas de seguridad.
+
+    3. ¿El kernel puede acceder al contenido de regiones de     memoria creadas con esta system call?
+
+        En teoría y por diseño, el kernel no puede acceder directamente al contenido de las regiones de memoria creadas con memfd_secret()
+
+    El siguiente artículo contiene bastante información al respecto: <https://lwn.net/Articles/865256/>
