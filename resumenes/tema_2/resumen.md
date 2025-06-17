@@ -10,12 +10,12 @@ En sistemas **Unix y GNU/Linux, la Interfaz de Programación de Aplicaciones (AP
 
 La invocación de una llamada al sistema sigue una serie de pasos:
 
-*   Los **parámetros necesarios para la llamada se colocan en la pila** del proceso de usuario.
-*   Se invoca una función de `libc` (conocida como *wrapper* de llamada al sistema), que se encarga de indicar el **número de la llamada al sistema** que se desea ejecutar y sus argumentos.
-*   Esta función ejecuta una **interrupción por software, también llamada TRAP**, para cambiar el modo de ejecución del procesador de **modo usuario a modo kernel**.
-*   Una vez en modo kernel, el sistema operativo utiliza el número de la llamada al sistema (típicamente cargado en un registro, como EAX en x86 32-bit o RDI en AMD64) para buscar en la **tabla de llamadas al sistema** y determinar qué función *handler* del kernel debe ejecutar.
-*   El kernel entonces ejecuta el código correspondiente a la llamada, lo que puede implicar acceso a dispositivos de hardware o realizar operaciones privilegiadas.
-*   Los parámetros pasados a las llamadas al sistema deben manejarse con extremo cuidado, ya que se configuran en el espacio de usuario. Es crucial que los punteros no apunten al espacio del kernel para evitar problemas de seguridad, y el kernel utiliza APIs especiales (como `copy_from_user()`) para acceder de forma segura a los datos en el espacio de usuario.
+* Los **parámetros necesarios para la llamada se colocan en la pila** del proceso de usuario.
+* Se invoca una función de `libc` (conocida como *wrapper* de llamada al sistema), que se encarga de indicar el **número de la llamada al sistema** que se desea ejecutar y sus argumentos.
+* Esta función ejecuta una **interrupción por software, también llamada TRAP**, para cambiar el modo de ejecución del procesador de **modo usuario a modo kernel**.
+* Una vez en modo kernel, el sistema operativo utiliza el número de la llamada al sistema (típicamente cargado en un registro, como EAX en x86 32-bit o RDI en AMD64) para buscar en la **tabla de llamadas al sistema** y determinar qué función *handler* del kernel debe ejecutar.
+* El kernel entonces ejecuta el código correspondiente a la llamada, lo que puede implicar acceso a dispositivos de hardware o realizar operaciones privilegiadas.
+* Los parámetros pasados a las llamadas al sistema deben manejarse con extremo cuidado, ya que se configuran en el espacio de usuario. Es crucial que los punteros no apunten al espacio del kernel para evitar problemas de seguridad, y el kernel utiliza APIs especiales (como `copy_from_user()`) para acceder de forma segura a los datos en el espacio de usuario.
 
 Las instrucciones específicas para invocar llamadas al sistema son **dependientes de la arquitectura de la CPU**. Por ejemplo, Intel x86 de 32 bits usa la instrucción `int 0x80`, mientras que AMD64/x86_64 usa la instrucción `syscall`.
 
@@ -23,12 +23,12 @@ Las instrucciones específicas para invocar llamadas al sistema son **dependient
 
 Desarrollar una nueva llamada al sistema en GNU/Linux implica:
 
-*   Asignarle un **número único** a la nueva syscall.
-*   Añadir una entrada a la **tabla de llamadas al sistema** del kernel (por ejemplo, en archivos como `syscall_64.tbl`).
-*   Respetar las convenciones del kernel, como el uso de prefijos (`sys_`, `__x64_sys_`) para las funciones *handler*.
-*   Utilizar la macro `asmlinkage` para instruir al compilador sobre cómo deben pasarse los parámetros a la función del kernel (por pila en x86 de 32 bits, por registros en otras arquitecturas).
-*   Implementar la lógica de la llamada al sistema utilizando funciones internas del kernel, como **`printk` para mensajes de depuración** (en lugar de `printf`, que es una función de `libc`).
-*   Finalmente, requiere **recompilar el kernel** para que los cambios surtan efecto.
+* Asignarle un **número único** a la nueva syscall.
+* Añadir una entrada a la **tabla de llamadas al sistema** del kernel (por ejemplo, en archivos como `syscall_64.tbl`).
+* Respetar las convenciones del kernel, como el uso de prefijos (`sys_`, `__x64_sys_`) para las funciones *handler*.
+* Utilizar la macro `asmlinkage` para instruir al compilador sobre cómo deben pasarse los parámetros a la función del kernel (por pila en x86 de 32 bits, por registros en otras arquitecturas).
+* Implementar la lógica de la llamada al sistema utilizando funciones internas del kernel, como **`printk` para mensajes de depuración** (en lugar de `printf`, que es una función de `libc`).
+* Finalmente, requiere **recompilar el kernel** para que los cambios surtan efecto.
 
 ## Herramientas para el Monitoreo
 
