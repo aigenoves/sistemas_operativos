@@ -26,6 +26,7 @@ Repositorio para la cursada de la materia Sistemas Operativos de la UNLP
 [Práctica 6 - Multiprocesadores](https://github.com/aigenoves/sistemas_operativos/tree/main/practicas/practica_6)
 
 ## Expliaciones de práctica
+
 [Expliación Práctica 1 - Kernel](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep1_kernel.pdf)  
 [Expliación Práctica 2 - Kernel II - Módulos y Drivers](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_modulos_y_drivers.pdf)  
 [Expliación Práctica 2 - Kernel II - System Calls y Módulos](https://github.com/aigenoves/sistemas_operativos/blob/main/explicaciones_de_practica/ep2_system_calls.pdf)  
