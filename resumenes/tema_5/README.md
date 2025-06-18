@@ -2,7 +2,7 @@
 
 Este documento explora la virtualización ligera en Linux, centrándose en las características del kernel que permiten el aislamiento de recursos y procesos, culminando en la explicación de los contenedores y herramientas como Docker y Podman.
 
-## 1. `chroot`
+## 1. [`chroot`][chroot]
 
 * Es una técnica para **aislar aplicaciones** cambiando el **directorio raíz aparente** de un proceso.
 * Introducido en UNIX v7 en 1979.
@@ -10,7 +10,7 @@ Este documento explora la virtualización ligera en Linux, centrándose en las c
 * El entorno creado se llama "**jail chroot**".
 * Permite que los procesos usen sus **propias versiones de bibliotecas** y ejecutar programas de otras distribuciones, pero **compartiendo el mismo kernel**.
 
-## 2. Control Groups (cgroups)
+## 2. [Control Groups (`cgroups`)][cg]
 
 * Característica del kernel de Linux que permite organizar procesos en **grupos jerárquicos**.
 * Su propósito es **limitar y monitorear el uso de recursos** (CPU, memoria, I/O, etc.).
@@ -38,7 +38,7 @@ Este documento explora la virtualización ligera en Linux, centrándose en las c
 * **No permite procesos internos** en cgroups que tengan hijos (excepto el raíz); los procesos deben asignarse a **cgroups hoja**.
 * Los controladores disponibles en un cgroup son los que el padre habilitó para sus hijos (`cgroup.subtree_control`).
 
-## 3. Namespaces
+## 3. [Namespaces][ns]
 
 * Permiten **aislar lo que los procesos ven**, haciendo que cada proceso (o conjunto de procesos) opere dentro de su propia instancia aislada de un recurso global.
 * Las modificaciones a un recurso quedan contenidas dentro del `namespace`.
@@ -114,3 +114,7 @@ Este documento explora la virtualización ligera en Linux, centrándose en las c
 * **Open Container Initiative (OCI)**: Iniciada por Docker, RedHat, AWS, Google. Se encarga de la especificación del runtime y las imágenes de contenedores, lanzando `runc` como primera implementación.
 * **Containerd**: El runtime usado por Docker Engine.
 * **Orquestadores de contenedores**: Herramientas como **Kubernetes**, Docker Swarm, RedHat Openshift, Rancher, que permiten aprovisionar, desplegar, escalar y administrar automáticamente contenedores en un cluster.
+
+[chroot]: https://github.com/aigenoves/sistemas_operativos/blob/main/resumenes/tema_5/chroot.md
+[cg]: https://github.com/aigenoves/sistemas_operativos/blob/main/resumenes/tema_5/cgroups.md
+[ns]: https://github.com/aigenoves/sistemas_operativos/blob/main/resumenes/tema_5/namespaces.md
