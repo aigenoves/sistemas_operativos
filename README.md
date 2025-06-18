@@ -42,7 +42,7 @@ Repositorio para la cursada de la materia Sistemas Operativos de la UNLP
 [Resumen Tema 1 - Kernel](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_1)  
 [Resumen Tema 2 - System Calls](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_2)  
 [Resumen Tema 3 - Hilos](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_3)  
-[Resumen Tema 4 - Kernel](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_4)  
+[Resumen Tema 4 - Virtualizacion](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_4)  
 [Resumen Tema 5 - cgroups, namespaces y contenedores](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_5)  
 [Resumen Tema 6 - Contenedores Docker](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_6)  
 [Resumen Tema 7 - Docker Compose, Podman](https://github.com/aigenoves/sistemas_operativos/tree/main/resumenes/tema_7)  
